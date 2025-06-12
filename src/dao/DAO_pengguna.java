@@ -18,40 +18,41 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import model.Model_pengguna;
+import service.Service_pengguna;
 
 /**
  *
  * @author MSI GAMING
  */
 public class DAO_pengguna implements Service_pengguna {
-        
+
     private Connection conn;
-    
-    public DAO_pengguna(){
+
+    public DAO_pengguna() {
         conn = Koneksi.getConnection();
     }
 
-
     @Override
     public void tambahData(Model_pengguna mod_pengguna) {
-    PreparedStatement st = null;
-    String sql = "INSERT INTO pengguna(id_pengguna,nama_pengguna,username,password,telp_pengguna,alamat_pengguna,level,gambar) VALUES (?,?,?,?,?,?,?,?)";
-    try {
-        st = conn.prepareStatement(sql);
-      
-        st.setString(1, mod_pengguna.getId_pengguna());
-        st.setString(2, mod_pengguna.getNama_pengguna());
-        st.setString(3, mod_pengguna.getUsername());
-        st.setString(4, Encrypt.getmd5java(mod_pengguna.getPassword()));
-        st.setString(5, mod_pengguna.getTelp_pengguna());
-        st.setString(6, mod_pengguna.getAlamat_pengguna());
-        st.setString(7, mod_pengguna.getLevel());
-        //st.setString(8, mod_pengguna.getImagepath());
-        
-        st.executeUpdate();
-    } catch (SQLException ex) {
-        Logger.getLogger(DAO_pengguna.class.getName()).log(Level.SEVERE, null, ex);
-    } finally {
+        PreparedStatement st = null;
+        // Query disesuaikan dengan asumsi tidak ada kolom 'gambar' di tabel 'pengguna'
+        String sql = "INSERT INTO pengguna(id_pengguna,nama_pengguna,username,password,telp_pengguna,alamat_pengguna,level) VALUES (?,?,?,?,?,?,?)";
+        try {
+            st = conn.prepareStatement(sql);
+
+            st.setString(1, mod_pengguna.getId_pengguna());
+            st.setString(2, mod_pengguna.getNama_pengguna());
+            st.setString(3, mod_pengguna.getUsername());
+            st.setString(4, Encrypt.getmd5java(mod_pengguna.getPassword()));
+            st.setString(5, mod_pengguna.getTelp_pengguna());
+            st.setString(6, mod_pengguna.getAlamat_pengguna());
+            st.setString(7, mod_pengguna.getLevel());
+
+            st.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DAO_pengguna.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
         if (st != null) {
             try {
                 st.close();
@@ -67,16 +68,15 @@ public class DAO_pengguna implements Service_pengguna {
     PreparedStatement st = null;
     String sql = "UPDATE pengguna SET nama_pengguna=?,username=?,telp_pengguna=?,alamat_pengguna=?,level=? WHERE id_pengguna=?";
     try {
-        st = conn.prepareStatement(sql);
-        st.setString(1, mod_pengguna.getNama_pengguna());
-        st.setString(2, mod_pengguna.getUsername());
-       // st.setString(3, Encrypt.getmd5java(mod_pengguna.getPassword()));
-        st.setString(3, mod_pengguna.getTelp_pengguna());
-        st.setString(4, mod_pengguna.getAlamat_pengguna());
-        st.setString(5, mod_pengguna.getLevel());
-        st.setString(6, mod_pengguna.getId_pengguna());
-
-        st.executeUpdate();
+            st = conn.prepareStatement(sql);
+            st.setString(1, mod_pengguna.getNama_pengguna());
+            st.setString(2, mod_pengguna.getUsername());
+            st.setString(3, mod_pengguna.getTelp_pengguna());
+            st.setString(4, mod_pengguna.getAlamat_pengguna());
+            st.setString(5, mod_pengguna.getLevel());
+            st.setString(6, mod_pengguna.getId_pengguna());
+            
+            st.executeUpdate();
         
     } catch (SQLException ex) {
         Logger.getLogger(DAO_pengguna.class.getName()).log(Level.SEVERE, null, ex);
